@@ -1,0 +1,3 @@
+
+Gerando chave ssh
+$ ssh-keygen -t rsa -C renanmendescontact@gmail.com
