@@ -346,10 +346,12 @@ GO
 
 /* TRIGGER DE DADOS - DATA MANIPULATION LANGUAGE */
 
+
 CREATE TRIGGER TRG_ATUALIZA_PRECO
 ON DBO.PRODUTOS
 FOR UPDATE
 AS
+-- Declaração de variaveis
 		DECLARE @IDPRODUTO INT
 		DECLARE @PRODUTO VARCHAR(30)
 		DECLARE @CATEGORIA VARCHAR(10)
@@ -358,6 +360,8 @@ AS
 		DECLARE @DATA DATETIME
 		DECLARE @USUARIO VARCHAR(30)
 		DECLARE @ACAO VARCHAR(100)
+/* valores vindos de tabelas são inseridos com o comando select 
+Valores vindos de funcoes ou valores literais devem ser atribuidos com o comamndo set*  Boas Praticas*/
 
 		--PRIMEIRO BLOCO
 		SELECT @IDPRODUTO = IDPRODUTO FROM inserted
@@ -393,16 +397,18 @@ UPDATE PRODUTOS SET NOME = 'LIVRO C#'
 WHERE IDPRODUTO = 1
 GO
 
-/* PROGRAMANDO TRIGGER EM UMA COLUNA */
+
 
 DROP TRIGGER TRG_ATUALIZA_PRECO
 GO
-
+/* PROGRAMANDO TRIGGER EM UMA COLUNA  utilizando t-sql, permitindo atualizar somente o preço*/
+/* Trigger que começa com create trigger, será armazenada no banco, mais quando começa com declare não será, ira ser usanda uma vez, geralmente para teste*/
 CREATE TRIGGER TRG_ATUALIZA_PRECO
 ON DBO.PRODUTOS
 FOR UPDATE AS
 IF UPDATE(PRECO)
 BEGIN
+-- Declaração de variaveis
 
 		DECLARE @IDPRODUTO INT
 		DECLARE @PRODUTO VARCHAR(30)
@@ -461,7 +467,7 @@ GO
 SELECT * FROM RESULTADO
 GO
 
-/* ATRIBUINDO SELECTS A VARIAVEIS - ANONIMO */
+/* ATRIBUINDO SELECTS A VARIAVEIS - ANONIMO Usando apenas uma vez e não sera armazenado em banco, usando para teste*/
 
 DECLARE
 		@RESULTADO INT
@@ -480,7 +486,7 @@ DECLARE
 		
 
 /* TRIGGER UPDATE */
-
+/* Money ja vem com 2 casas decimais, mais pode usar numeric*/
 CREATE TABLE EMPREGADO(
 	IDEMP INT PRIMARY KEY,
 	NOME VARCHAR(30),
@@ -489,6 +495,7 @@ CREATE TABLE EMPREGADO(
 )
 GO
 
+/* criando uma regra chamada gerente, e ela vai ser uma foreign key */
 ALTER TABLE EMPREGADO ADD CONSTRAINT FK_GERENTE
 FOREIGN KEY(IDGERENTE) REFERENCES EMPREGADO(IDEMP)
 GO
